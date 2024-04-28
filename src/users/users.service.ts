@@ -10,7 +10,9 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const isUser = await this.userModel.findOne({ email: createUserDto.email }).exec();
+    const isUser = await this.userModel
+      .findOne({ email: createUserDto.email })
+      .exec();
     if (isUser) {
       throw new BadRequestException("User with this email already exists!");
     }
