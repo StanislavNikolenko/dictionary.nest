@@ -18,20 +18,23 @@ export class UsersService {
     return this.userModel.findById(id).exec();
   }
 
+  async getUserByEmail(userEmail: string): Promise<User> {
+    return this.userModel.findOne({ email: userEmail }).exec();
+  }
+
   async getAllUsers(): Promise<User[]> {
     const users = await this.userModel.find();
     if (!users || users.length == 0) {
-        throw new NotFoundException('Users data not found!');
+      throw new NotFoundException("Users data not found!");
     }
     return users;
   }
 
   async update(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
-    return this.userModel.findOneAndUpdate({_id: userId}, updateUserDto);
+    return this.userModel.findOneAndUpdate({ _id: userId }, updateUserDto);
   }
 
   async remove(userId: string): Promise<User> {
-    return this.userModel.findOneAndDelete({_id: userId}) ;
+    return this.userModel.findOneAndDelete({ _id: userId });
   }
-
 }

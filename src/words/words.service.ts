@@ -5,7 +5,6 @@ import { NotFoundException } from "@nestjs/common";
 import { CreateWordDto, UpdateWordDto } from "./word.dto";
 import { Word } from "./word.schema";
 
-
 @Injectable()
 export class WordsService {
   constructor(@InjectModel(Word.name) private wordModel: Model<Word>) {}
@@ -22,17 +21,16 @@ export class WordsService {
   async getAllWords(userId: string): Promise<Word[]> {
     const words = await this.wordModel.find({ user: userId });
     if (!words || words.length == 0) {
-        throw new NotFoundException('Words data not found!');
+      throw new NotFoundException("Words data not found!");
     }
     return words;
   }
 
   async update(wordId: string, updateWordDto: UpdateWordDto): Promise<Word> {
-    return this.wordModel.findOneAndUpdate({_id: wordId}, updateWordDto);
+    return this.wordModel.findOneAndUpdate({ _id: wordId }, updateWordDto);
   }
 
   async remove(wordId: string): Promise<Word> {
-    return this.wordModel.findOneAndDelete({_id: wordId}) ;
+    return this.wordModel.findOneAndDelete({ _id: wordId });
   }
-
 }

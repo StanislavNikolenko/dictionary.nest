@@ -7,7 +7,7 @@ export type WordDocument = HydratedDocument<Word>;
 
 @Schema()
 export class Word {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "User" })
   user: User;
 
   @Prop()

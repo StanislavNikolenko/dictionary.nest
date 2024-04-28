@@ -14,7 +14,7 @@ import { User } from "./user.schema";
 @Controller("users")
 export class UsersController {
   constructor(private usersService: UsersService) {}
-  
+
   @Get()
   async getAllUsers(): Promise<User[]> {
     return await this.usersService.getAllUsers();

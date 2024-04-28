@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Param, Body, Put, Delete } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Body,
+  Put,
+  Delete,
+} from "@nestjs/common";
 import { WordsService } from "./words.service";
 import { Word } from "./word.schema";
 import { CreateWordDto, UpdateWordDto } from "./word.dto";
