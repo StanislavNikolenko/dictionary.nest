@@ -10,6 +10,7 @@ import {
 import { CreateUserDto, UpdateUserDto, ListAllEntities } from "./user.dto";
 import { UsersService } from "./users.service";
 import { User } from "./user.schema";
+import { Public } from "src/decorators";
 
 @Controller("users")
 export class UsersController {
@@ -25,6 +26,7 @@ export class UsersController {
     return await this.usersService.getOneUser(id);
   }
 
+  @Public()
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return await this.usersService.create(createUserDto);
