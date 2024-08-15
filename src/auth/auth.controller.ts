@@ -6,15 +6,15 @@ import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { LoginDto } from "./login.dto";
 import { Auth } from "./auth.type";
 
-@ApiTags('authentication')
+@ApiTags("authentication")
 @Controller("auth")
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @ApiOperation({summary: 'Sing in a user'})
+  @ApiOperation({ summary: "Sing in a user" })
   @ApiResponse({
     status: 200,
-    description: 'Sign in a user',
+    description: "Sign in a user",
     type: Auth,
   })
   @Public()

@@ -4,14 +4,49 @@ import { InjectModel } from "@nestjs/mongoose";
 import { NotFoundException } from "@nestjs/common";
 import { CreateWordDto, UpdateWordDto } from "./word.dto";
 import { Word } from "./word.schema";
+import { Concept } from "src/concept/concept.schema";
 
 @Injectable()
 export class WordsService {
-  constructor(@InjectModel(Word.name) private wordModel: Model<Word>) {}
+  constructor(
+    @InjectModel(Word.name) private wordModel: Model<Word>,
+    @InjectModel(Concept.name) private conceptModel: Model<Concept>,
+  ) {}
 
   async create(createWordDto: CreateWordDto): Promise<Word> {
-    const word = new this.wordModel(createWordDto);
-    return word.save();
+    const concept = await this.conceptModel
+      .findOne({ name: createWordDto.concept })
+      .exec();
+    const { user, language, value } = createWordDto;
+    if (concept) {
+      console.log("Concept exists!");
+      const { user, language, value } = createWordDto;
+      const word = new this.wordModel({
+        user: user,
+        concept: concept._id,
+        language: language,
+        value: value,
+      });
+      concept.words.push(word);
+      await concept.save();
+      return word.save();
+    }
+    console.log("Concept does not exist!");
+    const newConcept = new this.conceptModel({
+      name: createWordDto.concept,
+      user: createWordDto.user,
+    });
+    await newConcept.save();
+    const word = new this.wordModel({
+      user: user,
+      concept: newConcept._id,
+      language: language,
+      value: value,
+    });
+    await word.save();
+    newConcept.words.push(word);
+    await newConcept.save();
+    return word;
   }
 
   async getOneWord(id: string): Promise<Word> {

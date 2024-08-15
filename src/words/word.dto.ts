@@ -1,9 +1,13 @@
 import { User } from "src/users/user.schema";
 import { ApiProperty } from "@nestjs/swagger";
+import { Concept } from "src/concept/concept.schema";
 
 export class CreateWordDto {
   @ApiProperty()
   user: User;
+
+  @ApiProperty()
+  concept: Concept;
 
   @ApiProperty()
   language: string;
@@ -15,6 +19,9 @@ export class CreateWordDto {
 export class UpdateWordDto {
   @ApiProperty()
   user: User;
+
+  @ApiProperty()
+  concept: Concept;
 
   @ApiProperty()
   language: string;
