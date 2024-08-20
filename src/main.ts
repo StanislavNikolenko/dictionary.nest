@@ -4,7 +4,7 @@ import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle("Dictionary app")
     .setDescription("The API of the dictionary application")
