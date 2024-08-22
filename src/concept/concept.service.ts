@@ -18,4 +18,15 @@ export class ConceptService {
     }
     return concepts;
   }
+
+  async getConceptWords(conceptName: string): Promise<string[]> {
+    const concept = await this.conceptModel
+      .findOne({ name: conceptName })
+      .populate("words", "value")
+      .exec();
+    if (!concept) {
+      throw new NotFoundException("Concept was not found!");
+    }
+    return concept.words.map((word) => word.value);
+  }
 }

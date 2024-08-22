@@ -29,4 +29,10 @@ export class ConceptController {
   async getAllConcepts(@Param("id") id: string): Promise<Concept[]> {
     return await this.conceptService.getAllConcepts(id);
   }
+
+  @Public()
+  @Get(":name")
+  async getConceptWords(@Param("name") name: string): Promise<any> {
+    return await this.conceptService.getConceptWords(name);
+  }
 }

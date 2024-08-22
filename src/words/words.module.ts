@@ -14,6 +14,5 @@ import { Concept, ConceptSchema } from "src/concept/concept.schema";
   ],
   controllers: [WordsController],
   providers: [WordsService],
-  // exports: [WordsService],
 })
 export class WordsModule {}
