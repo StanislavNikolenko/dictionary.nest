@@ -42,6 +42,7 @@ export class WordsController {
     return await this.wordsService.getOneWord(id);
   }
 
+  @Public()
   @ApiOperation({ summary: "Create a new word" })
   @ApiResponse({
     status: 201,

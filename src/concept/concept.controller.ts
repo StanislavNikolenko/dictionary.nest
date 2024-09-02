@@ -35,4 +35,16 @@ export class ConceptController {
   async getConceptWords(@Param("name") name: string): Promise<any> {
     return await this.conceptService.getConceptWords(name);
   }
+
+  @Public()
+  @ApiOperation({ summary: "Delete a concept" })
+  @ApiResponse({
+    status: 200,
+    description: "Delete a concept",
+    type: Concept,
+  })
+  @Delete(":id")
+  async remove(@Param("id") id: string): Promise<Concept> {
+    return await this.conceptService.remove(id);
+  }
 }

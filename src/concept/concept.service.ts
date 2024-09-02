@@ -29,4 +29,8 @@ export class ConceptService {
     }
     return concept.words.map((word) => word.value);
   }
+
+  async remove(conceptId: string): Promise<Concept> {
+    return this.conceptModel.findOneAndDelete({ _id: conceptId });
+  }
 }
