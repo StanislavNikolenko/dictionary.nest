@@ -53,8 +53,8 @@ export class UsersController {
   })
   @Public()
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return await this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto): Promise<{ access_token: string }>{
+    return this.usersService.create(createUserDto);
   }
 
   @ApiOperation({ summary: "Update a user" })
