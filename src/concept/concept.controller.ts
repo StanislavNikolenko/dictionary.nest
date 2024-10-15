@@ -13,6 +13,7 @@ import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Public } from "src/decorators";
 import { ConceptService } from "./concept.service";
 import { Concept } from "./concept.schema";
+import { extractToken } from "src/services/token.service";
 
 @ApiTags("concepts")
 @Controller("concepts")
@@ -28,8 +29,7 @@ export class ConceptController {
   })
   @Get("users")
   async getAllConcepts(@Headers('Authorization') authHeader: string): Promise<Concept[]> {
-    console.log('authHeader:', authHeader);
-    const token = authHeader.split(' ')[1]
+    const token = extractToken(authHeader);
     return await this.conceptService.getAllConcepts(token);
   }
 

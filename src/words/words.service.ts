@@ -16,17 +16,16 @@ export class WordsService {
   ) {}
 
   async create(createWordDto: CreateWordDto, token: string): Promise<Word> {
-    const decodedToken: any = this.jwtService.decode(token);
-
+    const userId: any = this.jwtService.decode(token).sub;
     const concept = await this.conceptModel
       .findOne({ name: createWordDto.concept })
       .exec();
-    const { user, language, value } = createWordDto;
+    const { language, value } = createWordDto;
     if (concept) {
       console.log("Concept exists!");
-      const { user, language, value } = createWordDto;
+      const { language, value } = createWordDto;
       const word = new this.wordModel({
-        user: decodedToken.sub,
+        user: userId,
         concept: concept._id,
         language: language,
         value: value,
@@ -38,11 +37,11 @@ export class WordsService {
     console.log("Concept does not exist!");
     const newConcept = new this.conceptModel({
       name: createWordDto.concept,
-      user: decodedToken.sub,
+      user: userId,
     });
     await newConcept.save();
     const word = new this.wordModel({
-      user: decodedToken.sub,
+      user: userId,
       concept: newConcept._id,
       language: language,
       value: value,

@@ -14,6 +14,7 @@ import { CreateWordDto, UpdateWordDto } from "./word.dto";
 import { ApiTags } from "@nestjs/swagger";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Public } from "src/decorators";
+import { extractToken } from "src/services/token.service";
 
 @ApiTags("words")
 @Controller("words")
@@ -52,8 +53,7 @@ export class WordsController {
   })
   @Post()
   async create(@Body() createWordDto: CreateWordDto, @Headers('Authorization') authHeader: string): Promise<Word> {
-    console.log('authHeader:', authHeader);
-    const token = authHeader.split(' ')[1]
+    const token = extractToken(authHeader);
     return await this.wordsService.create(createWordDto, token);
   }
 
