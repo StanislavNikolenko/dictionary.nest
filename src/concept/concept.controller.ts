@@ -6,6 +6,7 @@ import {
   Body,
   Put,
   Delete,
+  Headers,
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
@@ -25,9 +26,11 @@ export class ConceptController {
     description: "Get all user concepts",
     type: [Concept],
   })
-  @Get("users/:id")
-  async getAllConcepts(@Param("id") id: string): Promise<Concept[]> {
-    return await this.conceptService.getAllConcepts(id);
+  @Get("users")
+  async getAllConcepts(@Headers('Authorization') authHeader: string): Promise<Concept[]> {
+    console.log('authHeader:', authHeader);
+    const token = authHeader.split(' ')[1]
+    return await this.conceptService.getAllConcepts(token);
   }
 
   @Public()

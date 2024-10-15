@@ -5,15 +5,19 @@ import { NotFoundException } from "@nestjs/common";
 import { CreateWordDto, UpdateWordDto } from "./word.dto";
 import { Word } from "./word.schema";
 import { Concept } from "src/concept/concept.schema";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class WordsService {
   constructor(
     @InjectModel(Word.name) private wordModel: Model<Word>,
     @InjectModel(Concept.name) private conceptModel: Model<Concept>,
+    private jwtService: JwtService
   ) {}
 
-  async create(createWordDto: CreateWordDto): Promise<Word> {
+  async create(createWordDto: CreateWordDto, token: string): Promise<Word> {
+    const decodedToken: any = this.jwtService.decode(token);
+
     const concept = await this.conceptModel
       .findOne({ name: createWordDto.concept })
       .exec();
@@ -22,7 +26,7 @@ export class WordsService {
       console.log("Concept exists!");
       const { user, language, value } = createWordDto;
       const word = new this.wordModel({
-        user: user,
+        user: decodedToken.sub,
         concept: concept._id,
         language: language,
         value: value,
@@ -34,11 +38,11 @@ export class WordsService {
     console.log("Concept does not exist!");
     const newConcept = new this.conceptModel({
       name: createWordDto.concept,
-      user: createWordDto.user,
+      user: decodedToken.sub,
     });
     await newConcept.save();
     const word = new this.wordModel({
-      user: user,
+      user: decodedToken.sub,
       concept: newConcept._id,
       language: language,
       value: value,

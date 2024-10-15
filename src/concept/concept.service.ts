@@ -3,16 +3,21 @@ import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { NotFoundException } from "@nestjs/common";
 import { Concept } from "src/concept/concept.schema";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class ConceptService {
   constructor(
     @InjectModel(Concept.name) private conceptModel: Model<Concept>,
+    private jwtService: JwtService
   ) {}
 
-  async getAllConcepts(userId: string): Promise<Concept[]> {
+  async getAllConcepts(token: string): Promise<Concept[]> {
     console.log("get all user concepts");
-    const concepts = await this.conceptModel.find({ user: userId });
+    const decodedToken: any = this.jwtService.decode(token);
+    console.log('decodedToken:', decodedToken);
+    const concepts = await this.conceptModel.find({ user: decodedToken.sub });
+    console.log('concepts:', concepts);
     if (!concepts || concepts.length == 0) {
       throw new NotFoundException("Words data not found!");
     }

@@ -6,6 +6,7 @@ import {
   Body,
   Put,
   Delete,
+  Headers
 } from "@nestjs/common";
 import { WordsService } from "./words.service";
 import { Word } from "./word.schema";
@@ -50,8 +51,10 @@ export class WordsController {
     type: Word,
   })
   @Post()
-  async create(@Body() createWordDto: CreateWordDto): Promise<Word> {
-    return await this.wordsService.create(createWordDto);
+  async create(@Body() createWordDto: CreateWordDto, @Headers('Authorization') authHeader: string): Promise<Word> {
+    console.log('authHeader:', authHeader);
+    const token = authHeader.split(' ')[1]
+    return await this.wordsService.create(createWordDto, token);
   }
 
   @ApiOperation({ summary: "Update a word" })
