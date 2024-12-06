@@ -28,9 +28,10 @@ export class WordsController {
     description: "Get all user words",
     type: [Word],
   })
-  @Get("users/:id")
-  async getAllWords(@Param("id") id: string): Promise<Word[]> {
-    return await this.wordsService.getAllWords(id);
+  @Get("user")
+  async getAllUserWords(@Headers('Authorization') authHeader: string): Promise<Word[]> {
+    const token = extractToken(authHeader);
+    return this.wordsService.getAllWords(token);
   }
 
   @ApiOperation({ summary: "Get word by id" })
@@ -41,6 +42,7 @@ export class WordsController {
   })
   @Get(":id")
   async getOneWord(@Param("id") id: string): Promise<Word> {
+    console.log('get the word:', id);
     return await this.wordsService.getOneWord(id);
   }
 

@@ -14,6 +14,9 @@ export class CreateWordDto {
 
   @ApiProperty()
   value: string;
+
+  @ApiProperty()
+  translation: string;
 }
 
 export class UpdateWordDto {

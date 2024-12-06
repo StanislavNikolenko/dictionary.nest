@@ -22,6 +22,10 @@ export class Word {
   value: string;
 
   @ApiProperty()
+  @Prop()
+  translation: string;
+
+  @ApiProperty()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Concept" })
   concept: Concept;
 }

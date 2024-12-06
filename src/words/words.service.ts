@@ -20,15 +20,16 @@ export class WordsService {
     const concept = await this.conceptModel
       .findOne({ name: createWordDto.concept })
       .exec();
-    const { language, value } = createWordDto;
+    const { language, value, translation } = createWordDto;
     if (concept) {
       console.log("Concept exists!");
-      const { language, value } = createWordDto;
+      const { language, value, translation } = createWordDto;
       const word = new this.wordModel({
         user: userId,
         concept: concept._id,
         language: language,
         value: value,
+        translation: translation
       });
       concept.words.push(word);
       await concept.save();
@@ -45,6 +46,7 @@ export class WordsService {
       concept: newConcept._id,
       language: language,
       value: value,
+      translation: translation
     });
     await word.save();
     newConcept.words.push(word);
@@ -56,11 +58,14 @@ export class WordsService {
     return this.wordModel.findById(id).exec();
   }
 
-  async getAllWords(userId: string): Promise<Word[]> {
-    const words = await this.wordModel.find({ user: userId });
+  async getAllWords(token: string): Promise<Word[]> {
+    const decodedToken: any = this.jwtService.decode(token);
+    console.log('get words for the user:', decodedToken.sub);
+    const words = await this.wordModel.find({ user: decodedToken.sub });
     if (!words || words.length == 0) {
       throw new NotFoundException("Words data not found!");
     }
+    console.log('words.length:', words.length);
     return words;
   }
 
