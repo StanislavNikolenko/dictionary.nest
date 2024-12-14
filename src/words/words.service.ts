@@ -65,7 +65,7 @@ export class WordsService {
     if (!words || words.length == 0) {
       throw new NotFoundException("Words data not found!");
     }
-    console.log('words.length:', words.length);
+    console.log('words', words);
     return words;
   }
 
